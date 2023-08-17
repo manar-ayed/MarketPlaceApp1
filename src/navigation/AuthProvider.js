@@ -64,8 +64,13 @@ export const AuthProvider = ({children}) => {
             });
 
            // Ajouter un document vide dans la collection 'cart' pour l'utilisateur
-  await firestore().collection('cart').add({
+  /*await firestore().collection('cart').add({
     userId: userId,
+    items: [],
+  });*/
+  // Ajouter un document dans la collection 'cart' pour l'utilisateur ayant le même id que userId
+  await firestore().collection('cart').doc(userId).set({
+    userId,
     items: [],
   });
   // Ajouter un document dans la collection 'favoris' pour l'utilisateur

@@ -65,9 +65,6 @@ const CartScreen: React.FC = () => {
           <Icon name="plus" size={20} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => handleRemoveItem(item)}>
-        <Icon name="trash" size={20} />
-      </TouchableOpacity>
     </View>
   );
 

@@ -67,15 +67,15 @@ export const fetchCartItemsFromFirestore = async (
 ): Promise<cartItem[]> => {
   try {
     const cartItemsRef = firestore().collection('cart');
-    //console.log('User cart reference:', cartItemsRef);
+    console.log('User cart reference:', cartItemsRef);
 
     const cartSnapshot = await cartItemsRef.where('userId', '==', userId).get();
-    //console.log('Cart snapshot:', cartSnapshot);
+    console.log('Cart snapshot:', cartSnapshot);
 
     const cartItems: cartItem[] = [];
 
     cartSnapshot.forEach(doc => {
-      //console.log('ENTER FOR !');
+      console.log('ENTER FOR !');
       const cartItemData = doc.data();
       const cartItem: cartItem = {
         product: cartItemData.product,
@@ -108,7 +108,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: async (state, action: PayloadAction<AddToCartPayload>) => {
+    addToCart: (state, action: PayloadAction<AddToCartPayload>) => {
       console.log('addToCart called');
       const {item, quantity, userId} = action.payload;
       const existingItem = state.find(
@@ -126,7 +126,7 @@ const cartSlice = createSlice({
 
       // Mettre à jour le panier dans Firestore
       try {
-        const cartCollectionRef = firestore().collection('cart');
+        /*const cartCollectionRef = firestore().collection('cart');
         console.log('User cart reference:', cartCollectionRef);
 
         // Query for documents that have the userId field equal to the desired userId
@@ -147,9 +147,9 @@ const cartSlice = createSlice({
           await doc.ref.update({
             items: cartItems,
           });
-        });
-        // Le document correspondant de la collection cart n'a pas l'ID : userId
-        /*firestore()
+        });*/
+        // Si Le document correspondant de la collection cart a l'ID = userId
+        firestore()
           .collection('cart')
           .doc(userId)
           .update({
@@ -157,7 +157,7 @@ const cartSlice = createSlice({
               item: cartItem.product,
               quantity: cartItem.quantity,
             })),
-          });*/
+          });
       } catch (error) {
         console.log('Error updating cart in Firestore:', error);
       }
