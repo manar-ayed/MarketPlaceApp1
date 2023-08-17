@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore'
 export const AuthContext = createContext();
 import {setCartItems, fetchCartItemsFromFirestore} from '../store/cartSlice'
 import { useDispatch } from 'react-redux';
+import { setFavoriteItems } from '../store/favoriteSlice';
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
@@ -14,11 +15,13 @@ export const AuthProvider = ({children}) => {
       if (user) {
         setUser(user);
 
-        // Load user's cart items here
+        // Load user's cart items 
         const cartItems = await fetchCartItemsFromFirestore(user.uid);
-        console.log('USER LOADED !', cartItems);
-        // Dispatch action to update cart items in Redux Store
         dispatch(setCartItems(cartItems));
+
+        // Load user's favorite items 
+        const fItems = await fetchCartItemsFromFirestore(user.uid);
+        dispatch(setFavoriteItems(fItems));
       } else {
         setUser(null);
       }
@@ -27,18 +30,7 @@ export const AuthProvider = ({children}) => {
     return () => unsubscribe();
   }, []);
 
-  /*useEffect(() => {
-    if (user) {
-      const fetchCartItems = async () => {
-        const cartItemsFromFirestore = await fetchCartItemsFromFirestore(
-          user.uid
-        );
-        dispatch(setCartItems(cartItemsFromFirestore));
-      };
   
-      fetchCartItems();
-    }
-  }, [user]);*/
   return (
     <AuthContext.Provider
       value={{
@@ -74,8 +66,9 @@ export const AuthProvider = ({children}) => {
     items: [],
   });
   // Ajouter un document dans la collection 'favoris' pour l'utilisateur
-await firestore().collection('favorites').doc(userId).set({
-  favoriteProducts: [],
+await firestore().collection('favoris').doc(userId).set({
+  userId,
+  items: [],
 });
           } catch (e) {
             console.log(e);

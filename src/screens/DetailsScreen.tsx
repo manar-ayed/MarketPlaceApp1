@@ -131,13 +131,14 @@ import {ScrollView} from 'react-native';
 import {AuthContext} from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import {cartItem} from '../store/cartSlice';
+import {addToFavorites, removeFromFavorites} from '../store/favoriteSlice';
 //import {addToFavorites, removeFromFavorites} from '../store/favoriteSlice';
 const DetailsScreen = () => {
   const route = useRoute();
   //const {product} = route.params ;
   const {product} = route.params as {product: Product};
   const {user} = useContext(AuthContext);
-  //const favorites = useSelector(state => state.favorites);
+  const favorites = useSelector(state => state.favoris);
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -150,32 +151,23 @@ const DetailsScreen = () => {
       fetchCartItems();
     }
   }, [user, dispatch]);*/
-  const handleToggleFavorite = () => {
+
+  /*const handleToggleFavorite = () => {
     setIsFavorite(prevIsFavorite => !prevIsFavorite);
-  };
-
-  //const isFavorite = favorites.includes(product.id);
-
-  /*const handleToggleFavorite = async () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(product.id));
-      await firestore()
-        .collection('favorites')
-        .doc(user.uid)
-        .update({
-          favoriteProducts: firestore.FieldValue.arrayRemove(product.id),
-        });
-    } else {
-      dispatch(addToFavorites(product.id));
-      await firestore()
-        .collection('favorites')
-        .doc(user.uid)
-        .update({
-          favoriteProducts: firestore.FieldValue.arrayUnion(product.id),
-        });
-    }
   };*/
 
+  const handleToggleFavorite = async () => {
+    // Toggle the local state
+    setIsFavorite(prevIsFavorite => !prevIsFavorite);
+
+    if (isFavorite) {
+      // Remove the item from favorites
+      dispatch(removeFromFavorites({item: product, userId: user.uid}));
+    } else {
+      // Add the item to favorites
+      dispatch(addToFavorites({item: product, userId: user.uid}));
+    }
+  };
   const handleAddToCart = () => {
     console.log('handleAddToCart called');
     if (user) {

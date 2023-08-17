@@ -19,7 +19,7 @@ const HomeStack = createNativeStackNavigator();
 const HomeStackNavigator = () => {
   const navigation = useNavigation();
   const showProductsCart = () => {
-    navigation.navigate('cart');
+    navigation.navigate('favoris');
   };
   const {logout} = useContext(AuthContext);
   return (
@@ -52,6 +52,7 @@ const HomeStackNavigator = () => {
         }}
       />
       <HomeStack.Screen name="cart" component={CartScreen} />
+      <HomeStack.Screen name="favoris" component={FavoriScreen} />
     </HomeStack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {Product} from '../content/Product';
 
@@ -67,12 +67,12 @@ export const fetchCartItemsFromFirestore = async (
 ): Promise<cartItem[]> => {
   try {
     const cartItemsRef = firestore().collection('cart').doc(userId);
-    console.log('User cart reference:', cartItemsRef);
+    // console.log('User cart reference:', cartItemsRef);
 
     const cartSnapshot = await cartItemsRef.get();
-    console.log('Cart snapshot:', cartSnapshot);
+    // console.log('Cart snapshot:', cartSnapshot);
     const cartItemsData = cartSnapshot.data();
-    console.log('_data PROPERTY OF Snapshot', cartItemsData);
+    // console.log('_data PROPERTY OF Snapshot', cartItemsData);
     // Access the 'items' array or use an empty array if it's not available
     const itemsArray = cartItemsData?.items ?? [];
     const cartItems: cartItem[] = itemsArray.map(item => ({
@@ -89,7 +89,7 @@ export const fetchCartItemsFromFirestore = async (
       };
       cartItems.push(cartItem);
     });*/
-    console.log('Cart items:', cartItems);
+    // console.log('Cart items:', cartItems);
 
     return cartItems;
   } catch (error) {
