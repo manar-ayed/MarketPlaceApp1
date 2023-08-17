@@ -3,19 +3,20 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AuthContext} from '../navigation/AuthProvider';
 
 import HomeScreen from '../screens/HomeScreen';
+import FavoriScreen from '../screens/FavoriScreen';
+
 import DetailsScreen from '../screens/DetailsScreen';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {useNavigation} from '@react-navigation/native';
 import CartScreen from '../screens/CartScreen';
-import {useSelector} from 'react-redux';
-import WelcomeScreen from '../screens/WelcomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
+
 import {useContext} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const HomeStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const HomeStackNavigator = () => {
   const navigation = useNavigation();
@@ -25,9 +26,6 @@ const HomeStackNavigator = () => {
   const {logout} = useContext(AuthContext);
   return (
     <HomeStack.Navigator>
-      {/*<HomeStack.Screen name="welcome" component={WelcomeScreen} />
-      <HomeStack.Screen name="Login" component={LoginScreen} />
-  <HomeStack.Screen name="Signup" component={SignupScreen} />*/}
       <HomeStack.Screen
         name="Home"
         component={HomeScreen}
@@ -49,9 +47,7 @@ const HomeStackNavigator = () => {
         component={DetailsScreen}
         options={{
           headerRight: () => (
-            <TouchableOpacity
-              //style={styles.cartIconContainer}
-              onPress={showProductsCart}>
+            <TouchableOpacity onPress={showProductsCart}>
               <Icon name="shopping-cart" size={24} color="#000" />
             </TouchableOpacity>
           ),

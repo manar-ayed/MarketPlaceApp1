@@ -1,103 +1,5 @@
-{
-  /*import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {emailValidator, passwordValidator} from '../core/utils';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
-const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState({value: '', error: ''});
-  const [password, setPassword] = useState({value: '', error: ''});
-
-  const _onLoginPressed = () => {
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError) {
-      setEmail({...email, error: emailError});
-      setPassword({...password, error: passwordError});
-      return;
-    }
-
-    navigation.navigate('Home');
-  };
-  return (
-    <View>
-      <TextInput
-        placeholder="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={text => setEmail({value: text, error: ''})}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-
-      <TextInput
-        placeholder="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={text => setPassword({value: text, error: ''})}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={_onLoginPressed}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <View style={styles.row}>
-        <Text style={styles.label}>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
-export default LoginScreen;
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  label: {
-    color: '#F4A844',
-  },
-  link: {
-    fontWeight: 'bold',
-    color: '#F4A844',
-  },
-  button: {
-    backgroundColor: '#F4A844',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    width: '60%',
-  },
-  buttonText: {
-    color: '#251807',
-    fontSize: 18,
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-});
-*/
-}
-
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
@@ -106,7 +8,7 @@ const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const {login, googleLogin, fbLogin} = useContext(AuthContext);
+  const {login} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -174,7 +76,7 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#2e64e5',
+    color: '#251807',
     fontFamily: 'Lato-Regular',
   },
 });

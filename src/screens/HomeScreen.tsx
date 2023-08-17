@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  ScrollView,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -13,6 +12,10 @@ import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {Product} from '../content/Product';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen: React.FC = () => {
   const [products, setProducts] = useState([]);
@@ -46,11 +49,6 @@ const HomeScreen: React.FC = () => {
       </View>
     </TouchableOpacity>
   );
-
-  /*const getCategories = (products: Product[]) => {
-    const categories = products.map(item => item.category);
-    return Array.from(new Set(categories));
-  };*/
 
   const getCategories = (products: Product[]): string[] => {
     const categories: string[] = [];

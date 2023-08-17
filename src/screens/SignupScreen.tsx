@@ -1,8 +1,7 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import {Alert} from 'react-native';
 import {AuthContext} from '../navigation/AuthProvider';
 
 const SignupScreen = ({navigation}) => {
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Kufam-SemiBoldItalic',
     fontSize: 28,
     marginBottom: 10,
-    color: '#051d5f',
+    color: '#B97721',
   },
   navButton: {
     marginTop: 15,
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#2e64e5',
+    color: '#251807',
     fontFamily: 'Lato-Regular',
   },
   textPrivate: {
