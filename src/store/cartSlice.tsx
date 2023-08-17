@@ -66,15 +66,21 @@ export const fetchCartItemsFromFirestore = async (
   userId: string,
 ): Promise<cartItem[]> => {
   try {
-    const cartItemsRef = firestore().collection('cart');
+    const cartItemsRef = firestore().collection('cart').doc(userId);
     console.log('User cart reference:', cartItemsRef);
 
-    const cartSnapshot = await cartItemsRef.where('userId', '==', userId).get();
+    const cartSnapshot = await cartItemsRef.get();
     console.log('Cart snapshot:', cartSnapshot);
+    const cartItemsData = cartSnapshot.data();
+    console.log('_data PROPERTY OF Snapshot', cartItemsData);
+    // Access the 'items' array or use an empty array if it's not available
+    const itemsArray = cartItemsData?.items ?? [];
+    const cartItems: cartItem[] = itemsArray.map(item => ({
+      product: item.item,
+      quantity: item.quantity,
+    }));
 
-    const cartItems: cartItem[] = [];
-
-    cartSnapshot.forEach(doc => {
+    /*cartSnapshot.forEach(doc => {
       console.log('ENTER FOR !');
       const cartItemData = doc.data();
       const cartItem: cartItem = {
@@ -82,7 +88,7 @@ export const fetchCartItemsFromFirestore = async (
         quantity: cartItemData.quantity,
       };
       cartItems.push(cartItem);
-    });
+    });*/
     console.log('Cart items:', cartItems);
 
     return cartItems;
@@ -126,28 +132,6 @@ const cartSlice = createSlice({
 
       // Mettre à jour le panier dans Firestore
       try {
-        /*const cartCollectionRef = firestore().collection('cart');
-        console.log('User cart reference:', cartCollectionRef);
-
-        // Query for documents that have the userId field equal to the desired userId
-        const querySnapshot = await cartCollectionRef
-          .where('userId', '==', userId)
-          .get();
-        console.log('Cart snapshot:', querySnapshot);
-        // Update each matching document
-        querySnapshot.forEach(async doc => {
-          console.log('ENTER FOR !');
-
-          const cartItems = state.map(cartItem => ({
-            item: cartItem.product,
-            quantity: cartItem.quantity,
-          }));
-          console.log('Cart items:', cartItems);
-
-          await doc.ref.update({
-            items: cartItems,
-          });
-        });*/
         // Si Le document correspondant de la collection cart a l'ID = userId
         firestore()
           .collection('cart')
@@ -170,11 +154,35 @@ const cartSlice = createSlice({
         cartItem.quantity = quantity;
       }
     },
-    removeFromCart(state, action) {
-      const itemToRemove = action.payload;
-      return state.filter(
-        cartItem => cartItem.product.id !== itemToRemove.product.itemID,
+    removeFromCart: (state, action: PayloadAction<AddToCartPayload>) => {
+      const {item, quantity, userId} = action.payload;
+      const existingItem = state.find(
+        cartItem => cartItem.product.id === item.id,
       );
+      if (existingItem) {
+        if (existingItem.quantity > quantity) {
+          existingItem.quantity -= quantity;
+        } else {
+          const index = state.indexOf(existingItem);
+          if (index !== -1) {
+            state.splice(index, 1);
+          }
+        }
+      }
+      try {
+        // Si Le document correspondant de la collection cart a l'ID = userId
+        firestore()
+          .collection('cart')
+          .doc(userId)
+          .update({
+            items: state.map((cartItem: cartItem) => ({
+              item: cartItem.product,
+              quantity: cartItem.quantity,
+            })),
+          });
+      } catch (error) {
+        console.log('Error updating cart in Firestore:', error);
+      }
     },
     setCartItems(state, action) {
       return action.payload; // Met à jour l'état du panier avec les articles reçus en payload

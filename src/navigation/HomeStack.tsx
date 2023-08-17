@@ -13,10 +13,8 @@ import {useNavigation} from '@react-navigation/native';
 import CartScreen from '../screens/CartScreen';
 
 import {useContext} from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const HomeStack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 const HomeStackNavigator = () => {
   const navigation = useNavigation();
