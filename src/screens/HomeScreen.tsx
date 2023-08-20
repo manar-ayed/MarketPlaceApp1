@@ -86,7 +86,7 @@ const HomeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.searchBar}>
-        <Icon name="search" size={20} color="#888" style={styles.searchIcon} />
+        <Icon name="search" size={20} color="#ccc" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search..."
@@ -200,10 +200,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#ccc',
+    // borderColor: '#1A7EFC',
     marginRight: 8,
   },
   selectedFilterOption: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#ccc', // '#61A4FC'
   },
   filterOptionText: {
     fontSize: 14,

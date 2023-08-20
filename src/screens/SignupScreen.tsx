@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
@@ -13,6 +13,8 @@ const SignupScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../images/inscription.png')} />
+
       <Text style={styles.text}>Create an account</Text>
 
       <FormInput
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Kufam-SemiBoldItalic',
     fontSize: 28,
     marginBottom: 10,
-    color: '#B97721',
+    color: '#151B23',
   },
   navButton: {
     marginTop: 15,

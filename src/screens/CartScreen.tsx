@@ -17,6 +17,7 @@ import {
 } from '../store/cartSlice';
 import {AuthContext} from '../navigation/AuthProvider';
 import {RootState} from '../store/store';
+import CustomIconTextButton from '../components/CustomIconTextButton';
 //import auth from '@react-native-firebase/auth';
 
 const CartScreen: React.FC = () => {
@@ -78,21 +79,11 @@ const CartScreen: React.FC = () => {
           {item?.product?.title}
         </Text>
 
-        <Text style={styles.discountText}>{'$' + item?.product?.price}</Text>
+        <Text style={styles.priceText}>{'$' + item?.product?.price}</Text>
       </View>
       <View style={styles.addRemoveView}>
         <TouchableOpacity
-          style={[styles.addToCartBtn, {backgroundColor: 'red'}]}
-          onPress={() => handleRemoveItem(item)}>
-          <Text style={{color: '#fff', fontSize: 20, fontWeight: '700'}}>
-            -
-          </Text>
-        </TouchableOpacity>
-        <Text style={{fontSize: 16, fontWeight: '600', margin: 8}}>
-          {item?.quantity}
-        </Text>
-        <TouchableOpacity
-          style={[styles.addToCartBtn, {backgroundColor: 'green'}]}
+          style={[styles.addToCartBtn, {backgroundColor: '#1A7EFC'}]}
           onPress={() => handleIncreaseQuantity(item)}>
           <Text
             style={{
@@ -103,6 +94,20 @@ const CartScreen: React.FC = () => {
             +
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.addToCartBtn,
+            {backgroundColor: '#fff', borderColor: '#1A7EFC', borderWidth: 1},
+          ]}
+          onPress={() => handleRemoveItem(item)}>
+          <Text style={{color: '#1A7EFC', fontSize: 20, fontWeight: '700'}}>
+            -
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={{fontSize: 18, fontWeight: '800', margin: 8}}>
+          {item?.quantity}
+        </Text>
       </View>
     </View>
   );
@@ -116,8 +121,20 @@ const CartScreen: React.FC = () => {
           keyExtractor={item => item?.product?.id.toString()}
         />
       ) : (
-        <Text>CART IS EMPTY !</Text>
+        <View style={styles.emptyMsg}>
+          <Image
+            source={require('../images/ajouter-un-panier.png')}
+            style={styles.EmptyCart}
+          />
+          <Text style={styles.emptyText}>Your Cart Is Empty !</Text>
+        </View>
       )}
+      <Text style={styles.totalPrice}>
+        Total Price: ${calculateTotalPrice()}
+      </Text>
+      <TouchableOpacity style={styles.checkButton}>
+        <Text style={{color: '#fff'}}>Checkout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -163,26 +180,53 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontSize: 18,
-    color: 'green',
+    color: '#1A7EFC',
     fontWeight: '700',
   },
-  discountText: {
-    fontSize: 17,
-    fontWeight: '600',
-    marginLeft: 5,
-  },
+
   addRemoveView: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 5,
   },
   addToCartBtn: {
-    padding: 5,
-    borderRadius: 15,
+    padding: 2,
+    borderRadius: 10,
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 5,
+    marginRight: 8,
+  },
+  emptyMsg: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  EmptyCart: {
+    width: 100,
+    height: 150,
+    resizeMode: 'contain',
+  },
+  emptyText: {
+    marginTop: 20,
+    fontSize: 20,
+  },
+  totalPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  checkButton: {
+    padding: 10,
+    borderRadius: 5,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green',
+    marginHorizontal: 120,
+    marginBottom: 20,
+    marginVertical: 10,
   },
 });
 

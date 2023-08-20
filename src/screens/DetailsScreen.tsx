@@ -111,26 +111,17 @@ const styles = StyleSheet.create({
 export default DetailsScreen;
 */
 
-import React, {useContext, useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CustomIconButton from '../components/CustomIconButton';
 import CustomIconTextButton from '../components/CustomIconTextButton';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {addToCart, fetchCartItemsFromFirestore} from '../store/cartSlice';
+import {useRoute} from '@react-navigation/native';
+import {addToCart} from '../store/cartSlice';
 import {Product} from '../content/Product';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native';
 import {AuthContext} from '../navigation/AuthProvider';
-import firestore from '@react-native-firebase/firestore';
-import {cartItem} from '../store/cartSlice';
+
 import {addToFavorites, removeFromFavorites} from '../store/favoriteSlice';
 //import {addToFavorites, removeFromFavorites} from '../store/favoriteSlice';
 const DetailsScreen = () => {
@@ -138,24 +129,11 @@ const DetailsScreen = () => {
   //const {product} = route.params ;
   const {product} = route.params as {product: Product};
   const {user} = useContext(AuthContext);
-  const favorites = useSelector(state => state.favoris);
+  // const favorites = useSelector(state => state.favoris);
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  /*useEffect(() => {
-    if (user) {
-      const fetchCartItems = async () => {
-        const cartItems = await fetchCartItemsFromFirestore(user.userId);
-       dispatch(addToCart(cartItems)); // Utilisez le bon nom de l'action
-      };
-      fetchCartItems();
-    }
-  }, [user, dispatch]);*/
-
-  /*const handleToggleFavorite = () => {
-    setIsFavorite(prevIsFavorite => !prevIsFavorite);
-  };*/
-
+  // HANDLE TOGGLE FAVORITE WITH FIRESTORE ! (favorisSlice)
   const handleToggleFavorite = async () => {
     // Toggle the local state
     setIsFavorite(prevIsFavorite => !prevIsFavorite);
@@ -168,6 +146,19 @@ const DetailsScreen = () => {
       dispatch(addToFavorites({item: product, userId: user.uid}));
     }
   };
+  /*const handleToggleFavorite = async () => {
+    // Toggle the local state
+    setIsFavorite(prevIsFavorite => !prevIsFavorite);
+
+    if (isFavorite) {
+      // Remove the item from favorites
+      removeFromFavoritesAsync({id: product.id});
+    } else {
+      // Add the item to favorites
+      addToFavoritesAsync({item: product});
+    }
+  };*/
+
   const handleAddToCart = () => {
     console.log('handleAddToCart called');
     if (user) {
@@ -176,8 +167,6 @@ const DetailsScreen = () => {
       // Gérer le cas où l'utilisateur n'est pas connecté
     }
   };
-  // Show Cart
-  //const showProductsCart = () => {};
 
   return (
     <ScrollView style={styles.container}>

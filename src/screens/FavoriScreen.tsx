@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {
   favoriteItem,
   fetchFavoriteItemsFromFirestore,
+  removeFromFavorites,
   setFavoriteItems,
 } from '../store/favoriteSlice';
 import {
@@ -21,6 +22,7 @@ const FavorisScreen: React.FC = () => {
   const {user} = useContext(AuthContext);
   const favorisItems = useSelector((state: RootState) => state.favoris);
 
+  // FETCHING DATA WHEN USING FIRESTORE
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -42,21 +44,60 @@ const FavorisScreen: React.FC = () => {
         <Text style={styles.nameText} numberOfLines={1}>
           {item?.product?.title}
         </Text>
-
-        <Text style={styles.discountText}>{'$' + item?.product?.price}</Text>
       </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={favorisItems}
-        renderItem={renderItem}
-        keyExtractor={item => item?.product?.id.toString()}
-      />
+      {favorisItems.length ? (
+        <FlatList
+          data={favorisItems}
+          renderItem={renderItem}
+          keyExtractor={item => item?.product?.id.toString()}
+        />
+      ) : (
+        <View style={styles.emptyMsg}>
+          <Image
+            source={require('../images/toucher.png')}
+            style={styles.EmptyFav}
+          />
+          <Text style={styles.emptyText}>No Favorite items !</Text>
+        </View>
+      )}
     </View>
   );
+
+  {
+    /*return (
+    <View style={styles.container}>
+      {favorites.map((favorite, index) => (
+        <View style={styles.itemView}>
+          <Image
+            key={favorite.item.id}
+            source={{uri: favorite?.item?.image}}
+            style={styles.itemImage}
+          />
+          <View style={styles.nameView}>
+            <Text
+              key={favorite.item.title}
+              style={styles.nameText}
+              numberOfLines={2}>
+              {favorite?.item?.title}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={[styles.addToCartBtn, {backgroundColor: '#1A7EFC'}]}
+            onPress={() => removeFromFavoritesAsync(favorite.item.id)}>
+            <Text style={{color: '#fff', fontSize: 20, fontWeight: '700'}}>
+              -
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </View>
+      );*/
+  }
 };
 const styles = StyleSheet.create({
   container: {
@@ -82,43 +123,34 @@ const styles = StyleSheet.create({
     //margin: 5,
   },
   nameView: {
-    width: '30%',
-    margin: 5,
-  },
-  priceView: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    width: '70%',
+    // marginLeft: 5,
   },
   nameText: {
     fontSize: 18,
     fontWeight: '700',
   },
-  descText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  priceText: {
-    fontSize: 18,
-    color: 'green',
-    fontWeight: '700',
-  },
-  discountText: {
-    fontSize: 17,
-    fontWeight: '600',
-    marginLeft: 5,
-  },
-  addRemoveView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5,
-  },
   addToCartBtn: {
-    padding: 5,
-    borderRadius: 15,
+    padding: 2,
+    borderRadius: 10,
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 5,
+    marginRight: 15,
+  },
+  emptyMsg: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  EmptyFav: {
+    width: 100,
+    height: 150,
+    resizeMode: 'contain',
+  },
+  emptyText: {
+    marginTop: 20,
+    fontSize: 20,
   },
 });
 
