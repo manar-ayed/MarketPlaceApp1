@@ -15,7 +15,7 @@ const CustomIconTextButton: React.FC<CustomIconTextButtonProps> = ({
 }) => {
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
-      <Icon name={icon} size={20} color="#000"></Icon>
+      <Icon name={icon} size={20} color="#fff"></Icon>
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   );
@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#D6D2D5',
+    backgroundColor: '#1A7EFC',
     borderRadius: 8,
     margin: 10,
   },
   buttonText: {
     marginLeft: 10,
     fontSize: 16,
-    color: '#000',
+    color: '#fff',
   },
 });
 

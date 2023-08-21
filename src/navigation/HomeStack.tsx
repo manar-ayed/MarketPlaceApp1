@@ -25,20 +25,29 @@ const HomeStackM = () => {
   const showProductsCart = () => {
     navigation.navigate('cart');
   };
-  // const {logout} = useContext(AuthContext);
+  const {logout} = useContext(AuthContext);
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home2"
         component={HomeScreen}
         options={{
-          headerShown: false,
+          // headerShown: false,
+          title: 'Home',
+          headerRight: () => (
+            <TouchableOpacity style={{marginRight: 15}} onPress={logout}>
+              <Icon name="sign-out" size={24} color="#1A7EFC" />
+            </TouchableOpacity>
+          ),
         }}
       />
       <HomeStack.Screen
         name="Details"
         component={DetailsScreen}
-        options={{headerShown: false}}
+        options={{
+          // headerShown: false,
+          title: 'Details',
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -53,7 +62,7 @@ const HomeStackNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        //headerShown: false,
+        headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {backgroundColor: '#fff'},
         tabBarInactiveTintColor: '#151B23',
@@ -67,11 +76,11 @@ const HomeStackNavigator = () => {
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
-          headerRight: () => (
+          /*headerRight: () => (
             <TouchableOpacity style={{marginRight: 15}} onPress={logout}>
               <Icon name="sign-out" size={24} color="#1A7EFC" />
             </TouchableOpacity>
-          ),
+          ),*/
         }}
       />
       <Tab.Screen

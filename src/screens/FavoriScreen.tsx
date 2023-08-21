@@ -37,6 +37,10 @@ const FavorisScreen: React.FC = () => {
     };
   }, [dispatch]);
 
+  const handleRemoveFav = (item: favoriteItem) => {
+    dispatch(removeFromFavorites({item: item.product, userId: user.uid}));
+  };
+
   const renderItem = ({item}: {item: favoriteItem}) => (
     <View style={styles.itemView}>
       <Image source={{uri: item?.product?.image}} style={styles.itemImage} />
@@ -44,6 +48,22 @@ const FavorisScreen: React.FC = () => {
         <Text style={styles.nameText} numberOfLines={1}>
           {item?.product?.title}
         </Text>
+      </View>
+      <View>
+        <TouchableOpacity
+          style={[
+            styles.removeBtn,
+            {
+              backgroundColor: '#fff',
+              borderColor: '#1A7EFC',
+              borderWidth: 1,
+            },
+          ]}
+          onPress={() => handleRemoveFav(item)}>
+          <Text style={{color: '#1A7EFC', fontSize: 20, fontWeight: '700'}}>
+            -
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -123,7 +143,7 @@ const styles = StyleSheet.create({
     //margin: 5,
   },
   nameView: {
-    width: '70%',
+    width: '50%',
     // marginLeft: 5,
   },
   nameText: {
@@ -151,6 +171,14 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 20,
     fontSize: 20,
+  },
+  removeBtn: {
+    padding: 2,
+    borderRadius: 10,
+    width: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
   },
 });
 
